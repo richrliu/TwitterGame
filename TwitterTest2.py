@@ -1,32 +1,19 @@
 __author__ = 'richardliu'
 
-import requests
-from requests_oauthlib import OAuth1
-import json
+from ApiManagement import *
 
-ckey = '7b2e644deef137ac704a5c7e25336ba00557269e5'
-csecret = '9e85d43b8ad1b398208bf008e489a460'
-token = '123eedd4ccd7cb9834cf67934cff4bfe0557269e5'
-tokensecret = 'a388ca35a5330da1902227313e46a213'
+hashtagArr = ['lebron', 'fallout4', 'askrachel', 'tsmwin']
 
-url = 'https://ritetag.com/api/v2/historical-data/'
-hashtag = 'ball'
+if __name__ == "__main__":
+    con = MongoClient()
+    db = con.twitter
+    htags = db.hashtags
+    list = db.list
 
+    processDataOnHashtags(hashtagArr, htags)
+    hashtagString = arrToString(hashtagArr)
+    print(hashtagString)
+    addProcessedStringToColl(hashtagString, list)
 
-auth = OAuth1(ckey, csecret, token, tokensecret)
-
-urlurl = url+hashtag
-print(urlurl)
-
-r = requests.get(urlurl, auth = auth)
-
-parsed = json.loads(r.text)
-totalCount = 0
-collection = parsed['data']
-
-for day in collection:
-    print(day['date'] + ': ' + str(day['unique']))
-    totalCount += day['unique']
-
-print(parsed['hashtag'])
-print(totalCount)
+    htags.drop()
+    con.close()
