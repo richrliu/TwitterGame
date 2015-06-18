@@ -11,9 +11,9 @@ var stringToArr = function(str){
 	arr = str.split('][');
 	set = [];
 	arr.forEach(function(entry){
-		if (!set.contains(entry){
+		if (!set.contains(entry)){
 			set.push(entry);
-		});
+		};
 	});
 	return set;
 }

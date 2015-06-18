@@ -1,4 +1,4 @@
-var functionManager = require("TwitterFunctions.js");
+var functionManager = require("./TwitterFunctions.js");
 var request = require('request');
 var OAuth = require('OAuth');
 
@@ -14,14 +14,14 @@ var requestTrendsAtLocation = function(location){
     var oauth = new OAuth.OAuth(
 		'https://api.twitter.com/oauth/request_token',
 		'https://api.twitter.com/oauth/access_token',
-		twitterKey,
-		twitterSecret,
+		ckey,
+		csecret,
 		'1.0A',
 		null,
 		'HMAC-SHA1'
 	);
 	outputArr = [];
-	oauth.get(url, token, secret, 
+	oauth.get(url, atoken, asecret, 
 		function (error, data, response){
 	 		if (error) console.error(error);
 	 		parsed = JSON.parse(data);
@@ -43,30 +43,32 @@ var processDataOnHashtags = function(hashtagArr, coll){
     var oauth = new OAuth.OAuth(
 		'https://ritetag.com/oauth/request_token',
 		'https://ritetag.com/oauth/access_token',
-		twitterKey,
-		twitterSecret,
+		ckey,
+		csecret,
 		'1.0A',
 		null,
 		'HMAC-SHA1'
 	);
 	hashtagArr.forEach(function(hashtag){
 		urlurl = url+hashtag;
-		print(urlurl);
-		oauth.get(url, token, secret, 
+		console.log(urlurl);
+		totalCount = 0;
+		oauth.get(url, token, tokensecret, 
 			function (error, data, response){
 		 		if (error) console.error(error);
 		 		parsed = JSON.parse(data);
-		 		totalCount = 0;
+		 		console.log(data);
+		 		console.log(parsed);
 		 		collection = parsed['data'];
 		 		collection.forEach(function(day){
-		 			print(day['date'] + ': ' + str(day['unique']));
+		 			console.log(day['date'] + ': ' + str(day['unique']));
 		 			totalCount += day['unique'];
 		 		});
-		 		print(parsed['hashtag']);
-		 		print(totalCount);
+		 		console.log(parsed['hashtag']);
+		 		console.log(totalCount);
 			});
+			coll.insert({'hashtag':hashtag, 'count':totalCount});
 		});
-	coll.insert({'hashtag':hashtag, 'count':totalCount});
 }
 
 var apiManager = function(){
@@ -78,3 +80,5 @@ var apiManager = function(){
 		processDataOnHashtags(hashtagArr, coll);
 	}
 }
+
+module.exports = apiManager;

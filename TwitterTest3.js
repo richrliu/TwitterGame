@@ -1,5 +1,5 @@
-var apiManager = require("ApiManagement.js");
-var functionManager = require("TwitterFunctions.js");
+var apiManager = require("./ApiManagement.js");
+var functionManager = require("./TwitterFunctions.js");
 
 var apiManager = new apiManager();
 var funcManager = new functionManager();
@@ -19,4 +19,4 @@ trendingHashtagArr.forEach(function(hashtag){
 });
 cursor = list.find({"_id":1});
 str = JSON.parse(cursor[0]['list']);
-print(str);
+console.log(str);

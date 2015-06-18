@@ -1,5 +1,5 @@
-var apiManager = require("ApiManagement.js");
-var functionManager = require("TwitterFunctions.js");
+var apiManager = require("./ApiManagement.js");
+var functionManager = require("./TwitterFunctions.js");
 
 var funcManager = new functionManager();
 var apiManager = new apiManager();
@@ -14,7 +14,7 @@ var list = db.get('list');
 
 apiManager.processDataOnHashtags(hashtagArr, htags);
 hashtagString = funcManager.arrToString(hashtagArr);
-print(hashtagString);
+console.log('here');
 funcManager.addProcessedStringToColl(hashtagString, list);
 
 htags.drop();
