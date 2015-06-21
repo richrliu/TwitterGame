@@ -1,8 +1,8 @@
 var arrToString = function(arr){
 	str = '';
-	arr.forEach(function(entry){
-		str += '[' + entry + ']';
-	});
+	for(var index=0;index<arr.length;index++){
+		str += '[' + arr[index] + ']';
+	}
 	return str;
 }
 
@@ -29,18 +29,18 @@ var addWordToColl = function(str, coll){
 
 var addProcessedStringToColl = function(str, coll){
 	arr = str.substring(1, str.length-1);
-	arr.forEach(function(word){
-		addWordToColl(word, coll);
-	});
+	for(var index=0;index<arr.length;index++){
+		addWordToColl(arr[index], coll);
+	}
 }
 
 var functionManager = function(){
 	var self = this;
 	self.arrToString = function(arr){
-		arrToString(arr);
+		return arrToString(arr);
 	}
 	self.stringToArr = function(str){
-		stringToArr(str);
+		return stringToArr(str);
 	}
 	self.addWordToColl = function(str, coll){
 		addWordToColl(str, coll);
