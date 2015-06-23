@@ -18,20 +18,26 @@ var stringToArr = function(str){
 	return set;
 }
 
-var addWordToColl = function(str, coll){
-	original = coll.find({"_id":1})[0]['list'];
-	entry = '[' + str + ']';
-	if (original.indexOf(entry) == -1){
-		original+=entry;
-	}
-	coll.update({"_id":1},{"_id":1, "list":original});
-}
+// var addWordToColl = function(str, coll){
+// 	original = coll.find({"_id":1})[0]['list'];
+// 	entry = '[' + str + ']';
+// 	if (original.indexOf(entry) == -1){
+// 		original+=entry;
+// 	}
+// 	coll.update({"_id":1},{"_id":1, "list":original});
+// }
 
-var addProcessedStringToColl = function(str, coll){
-	arr = str.substring(1, str.length-1);
-	for(var index=0;index<arr.length;index++){
-		addWordToColl(arr[index], coll);
-	}
+// var addProcessedStringToColl = function(str, coll){
+// 	arr = str.substring(1, str.length-1);
+// 	for(var index=0;index<arr.length;index++){
+// 		addWordToColl(arr[index], coll);
+// 	}
+// }
+
+var updateHashtagCount = function(hashtag, count, coll){
+	exists = coll.find({"hashtag":hashtag, "count":count});
+	if (exists.length > 0) coll.update({"hashtag":hashtag}, {"hashtag":hashtag, "count":count});
+	else coll.insert({"hashtag":hashtag, "count":count});
 }
 
 var functionManager = function(){
@@ -47,6 +53,9 @@ var functionManager = function(){
 	}
 	self.addProcessedStringToColl = function(str, coll){
 		addProcessedStringToColl(str, coll);
+	}
+	self.updateHashtagCount = function(hashtag, count, coll){
+		updateHashtagCount(hashtag, count, coll);
 	}
 
 }

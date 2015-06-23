@@ -1,6 +1,6 @@
 var functionManager = require("./TwitterFunctions.js");
 var request = require('request');
-var OAuth = require('OAuth');
+var OAuth = require('oauth').OAuth;
 
 var funcManager = new functionManager();
 
@@ -10,7 +10,7 @@ var requestTrendsAtLocation = function(location){
     atoken = '479153124-1TKHoCzevmGAe9mMFxbld8P0OOXoCtd0R1M154G5';
     asecret = 'Df9PeMalswpheIMqhiPjSwzTQZhzyOnqS5WiwxZRIc2PD';
     url = 'https://api.twitter.com/1.1/trends/place.json';
-    url = url + '?id=' + str(location);
+    url = url + '?id=' + location.toString();
     var oauth = new OAuth.OAuth(
 		'https://api.twitter.com/oauth/request_token',
 		'https://api.twitter.com/oauth/access_token',
@@ -40,35 +40,45 @@ var processDataOnHashtags = function(hashtagArr, coll){
     token = '123eedd4ccd7cb9834cf67934cff4bfe0557269e5'
     tokensecret = 'a388ca35a5330da1902227313e46a213'
     url = 'https://ritetag.com/api/v2/historical-data/'
-    var oauth = new OAuth.OAuth(
-		'https://ritetag.com/oauth/request_token',
-		'https://ritetag.com/oauth/access_token',
+    var oauth = new OAuth(
+		null,
+		null,
 		ckey,
 		csecret,
-		'1.0A',
+		'1.0',
 		null,
 		'HMAC-SHA1'
 	);
-	hashtagArr.forEach(function(hashtag){
+
+	for (i=0; i<hashtagArr.length; i++){
+		hashtag = hashtagArr[i];
 		urlurl = url+hashtag;
 		console.log(urlurl);
 		totalCount = 0;
-		oauth.get(url, token, tokensecret, 
+		var promise = oauth.get(urlurl, token, tokensecret, 
 			function (error, data, response){
 		 		if (error) console.error(error);
+		 		// console.log(response);
 		 		parsed = JSON.parse(data);
-		 		console.log(data);
-		 		console.log(parsed);
 		 		collection = parsed['data'];
 		 		collection.forEach(function(day){
-		 			console.log(day['date'] + ': ' + str(day['unique']));
+		 			console.log(day['date'] + ': ' + day['unique'].toString());
 		 			totalCount += day['unique'];
 		 		});
 		 		console.log(parsed['hashtag']);
 		 		console.log(totalCount);
 			});
-			coll.insert({'hashtag':hashtag, 'count':totalCount});
-		});
+			// coll.insert({'hashtag':hashtag, 'count':totalCount});
+			promise.then(function(){
+				console.log('here');
+				funcManager.updateHashtagCount(hashtag, totalCount, coll);
+			}, function(err){
+				console.log(err);
+			});
+	}
+	// hashtagArr.forEach(function(hashtag){
+
+	// 	});
 }
 
 var apiManager = function(){
