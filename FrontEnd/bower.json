@@ -1,0 +1,18 @@
+{
+  "name": "TwitterGame",
+  "version": "0.0.1",
+  "homepage": "https://github.com/richrliu/TwitterGame",
+  "authors": [
+    "nesh170 <sivaneshwaran.loganathan@duke.edu>"
+  ],
+  "description": "Game to guess which HashTag is the most popular",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
